@@ -6,18 +6,10 @@ import { SelectBox } from './Select';
 import axios from 'axios';
 import { useJobs } from '@/context/jobsData';
 
-// const selectItems = [
-//   'option 1',
-//   'option 2',
-//   'option 3',
-//   'option 4',
-//   'option 5',
-// ];
-
 const payPeriod = ['YEARLY', 'HOURLY'];
 
 export function Filter() {
-  const { setJobs } = useJobs();
+  const { setJobs, setLoading } = useJobs();
   const [skills, setSkills] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string[]>([]);
@@ -25,6 +17,7 @@ export function Filter() {
   const [selectedPayPeriod, setSelectedPayPeriod] = useState<string[]>([]);
 
   const handleSendFilter = () => {
+    setLoading(true); // Começa o loading
     return axios
       .post(
         'http://localhost:3001/filter',
@@ -44,30 +37,38 @@ export function Filter() {
         setJobs(res.data);
         console.log(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false); // Para o loading independentemente do resultado
+      });
   };
 
   const handleFilter = async () => {
-    const skills = await axios
-      .get<string[]>('http://localhost:3001/skilltypes', {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: '*/*',
-        },
-      })
-      .then((res) => setSkills(res.data))
-      .catch((err) => console.log(err));
-    const location = await axios
-      .get<string[]>('http://localhost:3001/locationtypes', {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: '*/*',
-        },
-      })
-      .then((res) => setLocation(res.data))
-      .catch((err) => console.log(err));
+    try {
+      const skillsResponse = await axios.get<string[]>(
+        'http://localhost:3001/skilltypes',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        }
+      );
+      setSkills(skillsResponse.data);
 
-    console.log(skills, location);
+      const locationResponse = await axios.get<string[]>(
+        'http://localhost:3001/locationtypes',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        }
+      );
+      setLocation(locationResponse.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -95,13 +96,6 @@ export function Filter() {
           label="Pay Period"
         ></SelectBox>
       </div>
-      {/* <div className="flex w-72">
-        <SelectBox
-          placeholder="Selecione"
-          item={selectItems}
-          label="Benefits"
-        ></SelectBox>
-      </div> */}
       <div className="flex w-32">
         <SelectBox
           placeholder="UR"

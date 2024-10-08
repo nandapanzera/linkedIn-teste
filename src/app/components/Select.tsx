@@ -39,7 +39,13 @@ export function SelectBox({
       }
     } else {
       // Para seleção única
-      setSelectedItems([option]); // Certifique-se de que `selectedItems` sempre é um array
+      if (selectedItems[0] === option) {
+        // Se a opção já está selecionada, desmarque
+        setSelectedItems([]);
+      } else {
+        // Caso contrário, selecione a nova opção
+        setSelectedItems([option]);
+      }
       setOpen(false); // Fecha o dropdown após selecionar
     }
   };

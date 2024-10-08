@@ -27,16 +27,21 @@ export type Job = {
 type JobsContextData = {
   jobs: Job[];
   setJobs: (jobs: Job[]) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
 };
 
 const JobsContext = createContext({} as JobsContextData);
 
 export function JobsProvider({ children }: { children: ReactNode }) {
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const value = {
     jobs,
     setJobs,
+    loading,
+    setLoading,
   };
 
   return <JobsContext.Provider value={value}>{children}</JobsContext.Provider>;

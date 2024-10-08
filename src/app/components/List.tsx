@@ -1,10 +1,20 @@
-import { Job } from '@/context/jobsData';
+import { Job, useJobs } from '@/context/jobsData';
 import { Card } from './Card';
 export interface ListProps {
   cards: Job[]; // Estrutura dos cartões
 }
 
 export function List({ cards }: ListProps) {
+  const { loading } = useJobs();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center w-full h-full">
+        <span>Loading...</span> {/* Exibir mensagem de loading */}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-4 gap-8 max-h-[680px] overflow-scroll pr-8 pb-2">
       {cards.map((card, index) => (

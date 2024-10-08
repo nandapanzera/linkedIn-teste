@@ -1,6 +1,4 @@
-'use client';
-
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import {
   Popover,
@@ -15,20 +13,52 @@ export interface SelectProps {
   item: string[];
   label: string;
   placeholder: string;
+  selectedItems: string[]; // Assume que sempre será um array de strings
+  setSelectedItems: Dispatch<SetStateAction<string[]>>; // Atualiza o estado no pai
+  multiple?: boolean; // Define se permite múltiplas seleções
 }
 
-export function SelectBox({ item, label, placeholder }: SelectProps) {
+export function SelectBox({
+  item,
+  label,
+  placeholder,
+  selectedItems,
+  setSelectedItems,
+  multiple = false, // Por padrão, assume seleção única
+}: SelectProps) {
   const [open, setOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  // Função para selecionar/remover itens
+  // Função para seleção, diferenciando múltipla ou única
   const toggleItemSelection = (option: string) => {
-    if (selectedItems.includes(option)) {
-      setSelectedItems((prevItems) =>
-        prevItems.filter((item) => item !== option)
-      );
+    if (multiple) {
+      // Para múltipla seleção
+      if (selectedItems.includes(option)) {
+        setSelectedItems(selectedItems.filter((item) => item !== option));
+      } else {
+        setSelectedItems([...selectedItems, option]);
+      }
     } else {
-      setSelectedItems((prevItems) => [...prevItems, option]);
+      // Para seleção única
+      setSelectedItems([option]); // Certifique-se de que `selectedItems` sempre é um array
+      setOpen(false); // Fecha o dropdown após selecionar
+    }
+  };
+
+  // Exibição de itens selecionados
+  const displaySelectedItems = () => {
+    if (multiple) {
+      return selectedItems.length > 0
+        ? selectedItems.map((selectedItem, index) => (
+            <span
+              key={index}
+              className="px-2 py-1 bg-violet-200 rounded-full text-sm"
+            >
+              {selectedItem}
+            </span>
+          ))
+        : placeholder;
+    } else {
+      return selectedItems.length > 0 ? selectedItems[0] : placeholder;
     }
   };
 
@@ -38,7 +68,6 @@ export function SelectBox({ item, label, placeholder }: SelectProps) {
         {label}
       </div>
 
-      {/* Div principal onde os itens selecionados serão exibidos */}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -46,41 +75,32 @@ export function SelectBox({ item, label, placeholder }: SelectProps) {
             variant="outline"
           >
             <div className="flex gap-2 items-center w-full overflow-scroll">
-              {/* Exibe os itens selecionados */}
-              {selectedItems.length > 0 ? (
-                selectedItems.map((selectedItem, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-violet-200 rounded-full text-sm"
-                  >
-                    {selectedItem}
-                  </span>
-                ))
-              ) : (
-                <span className="text-text-gray text-base flex justify-between w-full items-center">
-                  {placeholder}
-                  {open ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                </span>
-              )}
+              {displaySelectedItems()}
+              <span className="text-text-gray text-base flex justify-between w-full items-center">
+                {open ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              </span>
             </div>
           </Button>
         </PopoverTrigger>
 
-        {/* Dropdown com as opções */}
-        <PopoverContent className="w-full mt-2 border-2 border-light-gray rounded-lg">
+        <PopoverContent className="w-full mt-2 border-2 border-light-gray rounded-lg max-h-60 overflow-y-auto">
           {item.map((option, index) => (
             <div
               key={index}
               className={cn(
                 'flex items-center p-2 cursor-pointer hover:bg-violet-300',
-                selectedItems.includes(option) && 'bg-violet-200'
+                multiple
+                  ? selectedItems.includes(option) && 'bg-violet-200'
+                  : selectedItems[0] === option && 'bg-violet-200'
               )}
               onClick={() => toggleItemSelection(option)}
             >
-              <Checkbox
-                checked={selectedItems.includes(option)}
-                onCheckedChange={() => toggleItemSelection(option)}
-              />
+              {multiple && (
+                <Checkbox
+                  checked={selectedItems.includes(option)}
+                  onCheckedChange={() => toggleItemSelection(option)}
+                />
+              )}
               <span className="ml-2">{option}</span>
             </div>
           ))}

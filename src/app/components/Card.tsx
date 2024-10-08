@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { FavoriteButton } from './FavoriteButton';
 
 export interface CardProps {
   title: string;
-  children: string;
+  children: ReactNode;
   company: string;
 }
 
@@ -17,7 +18,7 @@ export function Card({ children, company, title }: CardProps) {
         <div className="flex text-base text-medium-gray font-semibold ">
           {company}
         </div>
-        <div className="flex text-text-gray text-sm max-w-[240px] text-balance">
+        <div className="flex flex-col text-text-gray text-sm max-w-[240px] text-balance">
           {children}
         </div>
       </div>

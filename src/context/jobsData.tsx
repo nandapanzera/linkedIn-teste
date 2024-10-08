@@ -1,6 +1,13 @@
 'use client';
 
-import { createContext, ReactNode, useContext, useState } from 'react';
+import axios from 'axios';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 type Skill = {
   job_id: number;
@@ -29,6 +36,8 @@ type JobsContextData = {
   setJobs: (jobs: Job[]) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  loaded: boolean;
+  setLoaded: (loaded: boolean) => void;
 };
 
 const JobsContext = createContext({} as JobsContextData);
@@ -36,12 +45,36 @@ const JobsContext = createContext({} as JobsContextData);
 export function JobsProvider({ children }: { children: ReactNode }) {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  async function fetchJobs() {
+    const response = await axios
+      .get<Job[]>('http://localhost:3001/jobs', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: '*/*',
+        },
+      })
+      .then((res) => {
+        setJobs(res.data);
+        setLoaded(true);
+      })
+      .catch((err) => console.log(err));
+
+    console.log(response);
+  }
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
   const value = {
     jobs,
     setJobs,
     loading,
     setLoading,
+    loaded,
+    setLoaded,
   };
 
   return <JobsContext.Provider value={value}>{children}</JobsContext.Provider>;

@@ -5,7 +5,7 @@ export interface ListProps {
 }
 
 export function List({ cards }: ListProps) {
-  const { loading } = useJobs();
+  const { loading, loaded } = useJobs();
 
   if (loading) {
     return (
@@ -15,25 +15,27 @@ export function List({ cards }: ListProps) {
     );
   }
 
-  return (
-    <div className="grid grid-cols-4 gap-8 max-h-[680px] overflow-scroll pr-8 pb-2">
-      {cards.map((card, index) => (
-        <div key={index}>
-          <Card company={card.location} title={card.title}>
-            {card.job_skills.map((skill, index) => (
-              <span key={index} className="text-sm text-dark-gray">
-                {skill.skill_name}{' '}
-              </span>
-            ))}
-            {card.salaries.map((salary, index) => (
-              <span key={index} className="text-sm text-dark-gray">
-                {salary.currency} {salary.min_salary} - {salary.max_salary}{' '}
-                {salary.pay_period}
-              </span>
-            ))}
-          </Card>
-        </div>
-      ))}
-    </div>
-  );
+  if (loaded) {
+    return (
+      <div className="grid grid-cols-4 gap-8 max-h-[680px] overflow-scroll pr-8 pb-2">
+        {cards.map((card, index) => (
+          <div key={index}>
+            <Card company={card.location} title={card.title}>
+              {card.job_skills.map((skill, index) => (
+                <span key={index} className="text-sm text-dark-gray">
+                  {skill.skill_name}{' '}
+                </span>
+              ))}
+              {card.salaries.map((salary, index) => (
+                <span key={index} className="text-sm text-dark-gray">
+                  {salary.currency} {salary.min_salary} - {salary.max_salary}{' '}
+                  {salary.pay_period}
+                </span>
+              ))}
+            </Card>
+          </div>
+        ))}
+      </div>
+    );
+  }
 }

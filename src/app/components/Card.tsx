@@ -9,7 +9,7 @@ export interface CardProps {
 
 export function Card({ children, company, title }: CardProps) {
   return (
-    <div className="bg-slate-50 flex flex-col w-fit justify-center align-middle p-8 gap-4 rounded-lg shadow-md shadow-medium-gray border-1 border-medium-gray">
+    <div className="bg-slate-50 flex flex-col h-full w-full justify-center align-middle p-8 gap-4 rounded-lg shadow-md shadow-medium-gray border-1 border-medium-gray">
       <div className="flex text-lg text-left justify-between align-middle flex-row text-dark-gray font-bold">
         {title}
         <FavoriteButton />

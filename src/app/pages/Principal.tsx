@@ -1,6 +1,5 @@
 import { List } from '../components/List';
-import { Button } from '../components/Button';
-import { SelectBox } from '../components/Select';
+import { Filter } from '../components/Filter';
 import { Header } from '../components/Header';
 
 const cardsData = [
@@ -66,27 +65,13 @@ const cardsData = [
   },
 ];
 
-const selectItems = [
-  'option',
-  'option',
-  'option',
-  'option',
-  'option',
-  'option',
-  'option',
-  'option',
-  'option',
-  'option',
-];
-
 export function Principal() {
   return (
     <div className="flex flex-col justify-center gap-7 w-full h-fit ">
       <Header />
       {/* inputs */}
-      <div className="flex flex-row px-24 justify-between">
-        <Button>Enviar</Button>
-        <SelectBox label="Label" item={selectItems}></SelectBox>
+      <div className="flex px-24">
+        <Filter></Filter>
       </div>
       <div className="flex px-24">
         <List cards={cardsData}></List>

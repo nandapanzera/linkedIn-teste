@@ -17,7 +17,7 @@ export function Filter() {
   const [selectedPayPeriod, setSelectedPayPeriod] = useState<string[]>([]);
 
   const handleSendFilter = () => {
-    setLoading(true); // Começa o loading
+    setLoading(true);
     return axios
       .post(
         'http://localhost:3001/filter',
@@ -76,7 +76,7 @@ export function Filter() {
   }, []);
 
   return (
-    <div className="flex w-full flex-row gap-4 items-end justify-center">
+    <div className="flex w-full flex-col md:flex-row gap-4 items-start md:items-end justify-center">
       <div className="flex w-72">
         <SelectBox
           placeholder="Selecione"

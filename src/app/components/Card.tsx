@@ -1,18 +1,34 @@
+'use client';
 import { ReactNode } from 'react';
-import { FavoriteButton } from './FavoriteButton';
+import { IoHeartOutline } from 'react-icons/io5';
+import { IoHeart } from 'react-icons/io5';
+import { Button } from './Button';
 
 export interface CardProps {
   title: string;
   children: ReactNode;
   company: string;
+  isFavorite: boolean;
+  onToggleFavorite: () => void; // alternar favorito
 }
 
-export function Card({ children, company, title }: CardProps) {
+export function Card({
+  children,
+  company,
+  title,
+  isFavorite,
+  onToggleFavorite,
+}: CardProps) {
   return (
-    <div className="bg-slate-50 flex flex-col h-full w-full justify-center align-middle p-8 gap-4 rounded-lg shadow-md shadow-medium-gray border-1 border-medium-gray">
+    <div className="bg-slate-50 flex flex-col h-full w-full justify-between align-middle p-8 gap-4 rounded-lg shadow-md shadow-medium-gray border-1 border-medium-gray">
       <div className="flex text-lg text-left justify-between align-middle flex-row text-dark-gray font-bold">
         {title}
-        <FavoriteButton />
+        <button
+          onClick={onToggleFavorite}
+          className="flex h-fit w-fit justify-center focus:outline-none"
+        >
+          {isFavorite ? <IoHeart size={24} /> : <IoHeartOutline size={24} />}
+        </button>
       </div>
       <div className="flex flex-col justify-start align-middle gap-2">
         <div className="flex text-base text-medium-gray font-semibold ">
@@ -22,6 +38,14 @@ export function Card({ children, company, title }: CardProps) {
           {children}
         </div>
       </div>
+      <Button>
+        <a
+          href="mailto:fernandapanzera25@gmail.com?Subject=Vaga%20de%20Emprego&body=Olá,%0A%0ATenho interesse na vaga..."
+          className="flex w-fit h-fit text-base"
+        >
+          Entrar em contato
+        </a>
+      </Button>
     </div>
   );
 }

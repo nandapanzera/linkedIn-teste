@@ -5,13 +5,15 @@ import { Button } from './Button';
 import { SelectBox } from './Select';
 import axios from 'axios';
 import { useJobs } from '@/context/jobsData';
+import { Combobox } from './Combobox';
 
-const payPeriod = ['YEARLY', 'HOURLY'];
+// const payPeriod = ['YEARLY', 'HOURLY'];
 
 export function Filter() {
   const { setJobs, setLoading } = useJobs();
   const [skills, setSkills] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
+  const [payPeriod, setPayPeriod] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string[]>([]);
   const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
   const [selectedPayPeriod, setSelectedPayPeriod] = useState<string[]>([]);
@@ -69,6 +71,17 @@ export function Filter() {
     } catch (err) {
       console.log(err);
     }
+
+    const payPeriodResponse = await axios.get<string[]>(
+      'http://localhost:3001/payperiodtypes',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: '*/*',
+        },
+      }
+    );
+    setPayPeriod(payPeriodResponse.data);
   };
 
   useEffect(() => {
@@ -96,14 +109,14 @@ export function Filter() {
           label="Pay Period"
         ></SelectBox>
       </div>
-      <div className="flex w-32">
-        <SelectBox
+      <div className="flex min-w-72 w-fit">
+        <Combobox
           placeholder="UR"
-          item={location}
+          items={location}
           selectedItems={selectedLocation}
           setSelectedItems={setSelectedLocation}
           label="Location"
-        ></SelectBox>
+        ></Combobox>
       </div>
       <Button onClick={handleSendFilter}>Enviar</Button>
     </div>

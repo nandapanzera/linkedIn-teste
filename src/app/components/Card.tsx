@@ -9,6 +9,7 @@ export interface CardProps {
   children: ReactNode;
   company: string;
   isFavorite: boolean;
+  contact?: string;
   onToggleFavorite: () => void; // alternar favorito
 }
 
@@ -16,6 +17,7 @@ export function Card({
   children,
   company,
   title,
+  contact,
   isFavorite,
   onToggleFavorite,
 }: CardProps) {
@@ -40,7 +42,7 @@ export function Card({
       </div>
       <Button>
         <a
-          href="mailto:fernandapanzera25@gmail.com?Subject=Vaga%20de%20Emprego&body=Olá,%0A%0ATenho interesse na vaga..."
+          href={`mailto:${contact}?Subject=Vaga%20de%20Emprego&body=Olá,%0A%0ATenho interesse na vaga...`}
           className="flex w-fit h-fit text-base"
         >
           Entrar em contato

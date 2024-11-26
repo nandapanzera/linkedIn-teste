@@ -29,6 +29,7 @@ export type Job = {
   location: string;
   job_skills: Skill[];
   salaries: Salaries[];
+  contact?: string;
 };
 
 type JobsContextData = {
@@ -56,7 +57,13 @@ export function JobsProvider({ children }: { children: ReactNode }) {
         },
       })
       .then((res) => {
-        setJobs(res.data);
+        const jobs: Job[] = res.data;
+        jobs.forEach((job) => {
+          job.contact = `contato-${job.job_id}@${job.title
+            .replace(' ', '')
+            .toLowerCase()}.com`;
+        });
+        setJobs(jobs);
         setLoaded(true);
       })
       .catch((err) => console.log(err));

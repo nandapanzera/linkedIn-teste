@@ -1,4 +1,4 @@
-import { Job, useJobs } from '@/context/jobsData';
+import { Job } from '@/context/jobsData';
 import { Card } from './Card';
 export interface ListProps {
   cards: Job[];

@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { VariableSizeList as List } from 'react-window'; // Biblioteca para virtual scrolling
-
+import { VariableSizeList as List } from 'react-window';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +18,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useEffect } from 'react';
 
+// Propriedades do combobox
 export interface ComboboxProps {
   items: string[];
   label: string;
@@ -29,6 +30,7 @@ export interface ComboboxProps {
   multiple?: boolean;
 }
 
+// Componente do combobox
 export function Combobox({
   items,
   label,
@@ -37,6 +39,7 @@ export function Combobox({
   setSelectedItems,
   multiple = false,
 }: ComboboxProps) {
+  // Estados do combobox
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [dropdownWidth, setDropdownWidth] = React.useState(200);
@@ -44,7 +47,7 @@ export function Combobox({
   // Refs para calcular largura do combobox
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (buttonRef.current) {
       const maxItemWidth = Math.max(
         ...items.map((item) => item.length * 8), // Aproximação: 8px por caractere
@@ -54,6 +57,7 @@ export function Combobox({
     }
   }, [items]);
 
+  // Função para alternar a seleção de um item
   const toggleItemSelection = (value: string) => {
     if (multiple) {
       if (selectedItems.includes(value)) {
@@ -71,7 +75,7 @@ export function Combobox({
     item.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Virtualization for performance
+  // Virtualização para performance
   const Row = ({
     index,
     style,
@@ -99,6 +103,7 @@ export function Combobox({
     );
   };
 
+  // Retorno do componente
   return (
     <div className="flex w-full flex-col">
       <label className="font-semibold text-dark-gray pb-2">{label}</label>

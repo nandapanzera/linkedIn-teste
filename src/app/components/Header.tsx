@@ -2,11 +2,13 @@ import { Button } from './Button';
 import { IoHeartOutline } from 'react-icons/io5';
 import { GiHummingbird } from 'react-icons/gi';
 
+// Interface de propriedades do cabeçalho
 interface HeaderProps {
   onToggleShowFavorites: () => void; // alternar a visualização
   showFavorites: boolean;
 }
 
+// Componente do cabeçalho
 export function Header({ onToggleShowFavorites, showFavorites }: HeaderProps) {
   return (
     <div className="flex flex-row justify-between w-full py-9 px-10 h-fit bg-[#373ACC] top-0 items-center">

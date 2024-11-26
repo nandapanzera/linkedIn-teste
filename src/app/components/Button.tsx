@@ -1,9 +1,11 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
+// Propriedades do botão que herda as propriedades do botão HTML
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
+// Componente do botão
 export function Button({ children, ...props }: ButtonProps) {
   return (
     <div className="flex w-fit justify-center gap-2 align-middle">

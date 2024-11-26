@@ -5,7 +5,9 @@ import { Header } from '../components/Header';
 import { Job, useJobs } from '@/context/jobsData';
 import { useEffect, useState } from 'react';
 
+// Componente principal da aplicação que irá renderizar os componentes
 export function Principal() {
+  // Utilização do contexto para buscar os dados dos trabalhos
   const { jobs } = useJobs();
   // const jobs = [
   //   {
@@ -220,9 +222,11 @@ export function Principal() {
   //   },
   // ];
 
+  // Estados que serão utilizados
   const [favorite, setFavorites] = useState<Job[]>([]);
   const [showFavorites, setShowFavorites] = useState<boolean>(false);
 
+  // Carregar favoritos do local storage ao montar o componente
   useEffect(() => {
     const storedFavoritos = localStorage.getItem('favoritos');
     if (storedFavoritos) {
@@ -230,11 +234,11 @@ export function Principal() {
     }
   }, []);
 
-  useEffect(() => {
-    //Limpar o local storage
-    console.log(favorite);
-  }, [favorite]);
-
+  // Função para alternar favoritos de um job
+  /**
+   * @description Função que irá alternar o estado de favorito de um job
+   * @param jobId ID do job que será favoritado
+   */
   const toggleFavorite = (jobId: number) => {
     const isFavorite = favorite.some((job) => job.job_id === jobId);
     if (isFavorite) {
@@ -256,6 +260,7 @@ export function Principal() {
     ? favorite // Apenas favoritos
     : jobs;
 
+  // Função para alternar a visualização de favoritos
   const handleToggleShowFavorites = () => {
     setShowFavorites((prev) => !prev);
   };

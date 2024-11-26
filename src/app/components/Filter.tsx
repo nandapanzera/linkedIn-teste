@@ -9,8 +9,12 @@ import { Combobox } from './Combobox';
 
 // const payPeriod = ['YEARLY', 'HOURLY'];
 
+//Componente de filtro
 export function Filter() {
+  // Utilização do contexto para buscar os dados dos trabalhos
   const { setJobs, setLoading } = useJobs();
+
+  // Estados que serão utilizados
   const [skills, setSkills] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
   const [payPeriod, setPayPeriod] = useState<string[]>([]);
@@ -18,6 +22,7 @@ export function Filter() {
   const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
   const [selectedPayPeriod, setSelectedPayPeriod] = useState<string[]>([]);
 
+  // Função para enviar o filtro
   const handleSendFilter = () => {
     setLoading(true);
     return axios
@@ -45,6 +50,7 @@ export function Filter() {
       });
   };
 
+  // Função para buscar os filtros disponíveis
   const handleFilter = async () => {
     try {
       const skillsResponse = await axios.get<string[]>(
@@ -84,10 +90,12 @@ export function Filter() {
     setPayPeriod(payPeriodResponse.data);
   };
 
+  // Efeito inicial que irá buscar os dados quando o componente for montado
   useEffect(() => {
     handleFilter();
   }, []);
 
+  // Retorno do componente
   return (
     <div className="flex w-full flex-col md:flex-row gap-4 items-start md:items-end justify-center">
       <div className="flex w-72">

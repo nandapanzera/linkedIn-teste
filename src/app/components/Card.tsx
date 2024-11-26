@@ -4,6 +4,7 @@ import { IoHeartOutline } from 'react-icons/io5';
 import { IoHeart } from 'react-icons/io5';
 import { Button } from './Button';
 
+// Propriedades do card
 export interface CardProps {
   title: string;
   children: ReactNode;
@@ -13,6 +14,7 @@ export interface CardProps {
   onToggleFavorite: () => void; // alternar favorito
 }
 
+// Componente do card
 export function Card({
   children,
   company,

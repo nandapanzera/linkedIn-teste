@@ -1,11 +1,14 @@
 import { Job } from '@/context/jobsData';
 import { Card } from './Card';
+
+// Props do componente List
 export interface ListProps {
   cards: Job[];
   favorite: number[]; // Lista de IDs dos cartões favoritos
   onToggleFavorite: (jobId: number) => void; // alternar favorito
 }
 
+// Componente de lista de cards
 export function List({ cards, favorite, onToggleFavorite }: ListProps) {
   // const { loading, loaded } = useJobs();
 

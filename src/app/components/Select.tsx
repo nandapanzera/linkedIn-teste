@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/className';
 
+// Propriedades do Select
 export interface SelectProps {
   item: string[];
   label: string;
@@ -18,6 +19,7 @@ export interface SelectProps {
   multiple?: boolean; // Define se permite múltiplas seleções
 }
 
+// Componente do Select
 export function SelectBox({
   item,
   label,
@@ -26,6 +28,7 @@ export function SelectBox({
   setSelectedItems,
   multiple = false, // Por padrão, assume seleção única
 }: SelectProps) {
+  // Estado para controlar a abertura do dropdown
   const [open, setOpen] = useState(false);
 
   // Função para seleção, diferenciando múltipla ou única
